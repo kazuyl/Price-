@@ -46,9 +46,8 @@ def main():
         price = get_latest_price(SYMBOL)
 
         if price is not None:
-            if last_price is None or price != last_price:
-                send_price(price)
-                last_price = price
+            send_price(price)
+            last_price = price
 
         time.sleep(INTERVAL)
 
