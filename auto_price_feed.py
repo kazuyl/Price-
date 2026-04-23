@@ -26,14 +26,24 @@ def get_latest_price(symbol: str):
             print("[WARN] Yahoo returned empty dataframe")
             return None
 
-        price = float(df["Close"].dropna().iloc[-1])
-        return price
+        # FIX: immer letzten Wert sauber holen
+        close_series = df["Close"].dropna()
+
+        if len(close_series) == 0:
+            print("[WARN] no close data")
+            return None
+
+        price = close_series.iloc[-1]
+
+        # Falls es trotzdem Series ist → fix
+        if hasattr(price, "item"):
+            price = price.item()
+
+        return float(price)
 
     except Exception as e:
         print(f"[PRICE ERROR] {e}")
         return None
-
-
 def send_price(price: float):
     payload = {"price": price}
 
