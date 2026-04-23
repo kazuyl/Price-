@@ -7,7 +7,7 @@ SERVER_URL = os.environ.get(
     "SERVER_URL",
     "https://bot-v2-production.up.railway.app/price_update"
 )
-SYMBOL = os.environ.get("SYMBOL", "NQ=F")
+SYMBOL = os.environ.get("SYMBOL", "MNQM2026=F")
 INTERVAL = int(os.environ.get("INTERVAL", "15"))
 TIMEOUT = int(os.environ.get("TIMEOUT", "15"))
 
