@@ -90,7 +90,7 @@ def calculate_contracts(entry: float | int | None, stop: float | int | None) -> 
 
 
 def normalize_signal(data: dict[str, Any]) -> dict[str, Any]:
-    entry = data.get('entry')
+    entry = CURRENT_PRICE if CURRENT_PRICE else data.get("entry")
     stop = data.get('stop')
     tp = data.get('tp')
     side = data.get('side')
@@ -258,8 +258,11 @@ def webhook() -> Any:
         return jsonify({'ok': False, 'error': str(e)}), 500
 
 
+
 @app.route('/price_update', methods=['POST'])
 def price_update() -> Any:
+    global CURRENT_PRICE
+
     try:
         data = request.get_json(silent=True)
         if data is None:
