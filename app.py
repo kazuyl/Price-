@@ -8,6 +8,9 @@ from typing import Any
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+
+CURRENT_PRICE = None
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / 'data'
 DATA_DIR.mkdir(exist_ok=True)
