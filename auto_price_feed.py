@@ -11,6 +11,7 @@ SYMBOL = os.environ.get("SYMBOL", "NQ=F")
 INTERVAL = int(os.environ.get("INTERVAL", "15"))
 TIMEOUT = int(os.environ.get("TIMEOUT", "15"))
 
+
 def get_latest_price(symbol: str):
     try:
         df = yf.download(
@@ -22,34 +23,44 @@ def get_latest_price(symbol: str):
         )
 
         if df is None or df.empty:
+            print("[WARN] Yahoo returned empty dataframe")
             return None
 
-        return float(df["Close"].dropna().iloc[-1])
+        price = float(df["Close"].dropna().iloc[-1])
+        return price
 
     except Exception as e:
         print(f"[PRICE ERROR] {e}")
         return None
 
+
 def send_price(price: float):
+    payload = {"price": price}
+
     try:
-        r = requests.post(SERVER_URL, json={"price": price}, timeout=TIMEOUT)
-        print(f"[POST] price={price} status={r.status_code}")
+        r = requests.post(SERVER_URL, json=payload, timeout=TIMEOUT)
+        print(f"[POST] price={price} status={r.status_code} response={r.text}")
     except Exception as e:
         print(f"[POST ERROR] {e}")
 
+
 def main():
     print("=== AUTO PRICE FEED STARTED ===")
-
-    last_price = None
+    print(f"SERVER_URL: {SERVER_URL}")
+    print(f"SYMBOL: {SYMBOL}")
+    print(f"INTERVAL: {INTERVAL}s")
 
     while True:
         price = get_latest_price(SYMBOL)
 
         if price is not None:
+            print(f"[PRICE] fetched={price}")
             send_price(price)
-            last_price = price
+        else:
+            print("[WARN] no price fetched")
 
         time.sleep(INTERVAL)
+
 
 if __name__ == "__main__":
     main()
