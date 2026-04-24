@@ -157,7 +157,12 @@
             <div class="kv"><div class="label">Winrate</div><div class="value" id="winrate">-</div></div>
             <div class="kv"><div class="label">Average R</div><div class="value" id="avg_r">-</div></div>
             <div class="kv"><div class="label">Realized R</div><div class="value" id="realized_r">-</div></div>
-          </div>
+            <div class="kv">
+              <div class="label">Current Price</div>
+              <div class="value" id="current_price">-</div>
+            </div>
+          </div> <!-- ❗ DAS HAT GEFEHLT -->
+          
           <div class="row" style="margin-top:12px">
             <div class="kv"><div class="label">Realized PnL</div><div class="value" id="realized_pnl">-</div></div>
             <div class="kv"><div class="label">Signals Received</div><div class="value" id="signals_received">-</div></div>
@@ -300,6 +305,7 @@
         text('winrate', `${fmt(m.winrate)}%`);
         text('avg_r', fmt(m.avg_r, 3));
         text('realized_r', fmt(m.realized_r, 2));
+        text('current_price', fmt(data.current_price, 2));
         text('realized_pnl', `$${fmt(m.realized_pnl, 2)}`);
         text('signals_received', e.signals_received ?? 0);
         text('signals_accepted', e.signals_accepted ?? 0);
@@ -364,7 +370,7 @@
     }
 
     loadData();
-    setInterval(loadData, 5000);
+    setInterval(loadData, 2000);
   </script>
 </body>
 </html>
